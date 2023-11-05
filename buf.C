@@ -84,15 +84,13 @@ const Status BufMgr::allocBuf(int & frame)
                     if (bufTable[clockHand].dirty)
                     {
                         //flush page to disk
-                        status = bufTable[clockHand].file->writePage(bufTable[clockHand].pageNo,&bufPool[clockHand]); 
+                        status = bufTable[clockHand].file->writePage(bufTable[clockHand].pageNo,&(bufPool[clockHand])); 
                         if(status != OK)
                             break;                  
                     }
-                    status = hashTable->remove(bufTable[clockHand].file, bufTable[clockHand].pageNo);
-                    if(status != OK)
-                        break;
+                    hashTable->remove(bufTable[clockHand].file, bufTable[clockHand].pageNo);
                     frame = clockHand;
-                    bufTable[clockHand].Set(NULL, frame);
+                    //bufTable[clockHand].Set(NULL, frame);
                     break;
                 }
             }
@@ -100,7 +98,7 @@ const Status BufMgr::allocBuf(int & frame)
         else
         {
             frame = clockHand;
-            bufTable[clockHand].Set(NULL, frame);
+            //bufTable[clockHand].Set(NULL, frame);
             break;
         }
         if (times == 2)
